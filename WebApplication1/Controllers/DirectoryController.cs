@@ -8,14 +8,21 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DirectoryController
+    public class DirectoryController : ControllerBase
     {
-        DirectoryService directoryService = new DirectoryService();
+        private readonly DirectoryService _directoryService;
+
+        public DirectoryController(DirectoryService directoryService)
+        {
+            _directoryService = directoryService;
+        }
 
         [HttpGet]
-        public IActionResult GetFolderContents(String path)
+        public IActionResult GetFolderContents(String path = "")
         {
-            return directoryService.GetFolderContents(path);
+            var result =  _directoryService.GetFolderContents(path);
+
+            return Ok(result);
         }
     }
 }
