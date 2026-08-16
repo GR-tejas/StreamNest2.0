@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
             _directoryService = directoryService;
         }
 
-        [HttpGet]
+        [HttpGet("{*path}")]
         public IActionResult GetFolderContents(String path = "")
         {
             var result =  _directoryService.GetFolderContents(path);

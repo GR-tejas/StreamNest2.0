@@ -8,12 +8,11 @@ namespace WebApplication1.Services
 {
     public class DirectoryService
     {
-        string baseFolderPath = @"C:\Users\wasis\Desktop\LocalServerFolder";
+        //string baseFolderPath = @"C:\Users\wasis\Desktop\LocalServerFolder";
+        string baseFolderPath = @"G:\Volume H stuff\LocalServerDedicatedFolder";
         public DirectoryContentsDto GetFolderContents(String path = "")
         {
             String FolderPath = Path.Combine(baseFolderPath, path);
-            /*if (!Directory.Exists(FolderPath))
-                return NotFound(new { Message = $"Folder not found {FolderPath}" });*/
 
             var directoryInfo = new DirectoryInfo(FolderPath);
 
@@ -32,15 +31,6 @@ namespace WebApplication1.Services
             };
 
             return (response);
-
-            /*catch (UnauthorizedAccessException)
-            {
-                return StatusCode(403, new { Message = "Access denied to the specified directory." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { Message = ex.Message });
-            }*/
         }
     }
 }

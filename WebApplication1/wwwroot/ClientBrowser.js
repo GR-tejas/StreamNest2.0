@@ -1,9 +1,20 @@
 ﻿const folderName = $("#Fname");
-const folderContent = $("#Fcontent")
+const folderContent = $("#Fcontent");
+let currentPath = "";
 
 //fetch the folder content info.
-function getFolderContent(path) {
-    fetch('/api/Directory/' + path)
+function getFolderContent(name = "") {
+
+    if (name !== "") {
+        if (currentPath === "") {
+            currentPath = name;
+        }
+        else {
+            currentPath += '/' + name;
+        }
+    }
+
+    fetch('/api/Directory/' + currentPath)
       .then(function (response) {
         return response.json();
     }).then(function (result) {
@@ -21,15 +32,45 @@ function fillContentDiv(list) {
     if (!list) return;                    //return if list is empty
     for (const item of list) {
         const fdiv = document.createElement('div');
-        const fname = document.createElement('p');
-        fname.textContent = item.name;
-        const ftype = document.createElement('p');
-        ftype.textContent = item.type;
-        fdiv.appendChild(fname);
-        fdiv.appendChild(ftype);
+        const fbutton = document.createElement('button');
+        Object.assign(fbutton, {
+            type: 'button',
+            name: item.name,
+            className: item.type,
+            textContent: item.name
+        });
+
+        fbutton.addEventListener("click",function () {
+            if (this.className === "Folder") {
+                console.log("This is a folder");
+                getFolderContent(this.name, this.className);
+            }
+            if (this.className === "File") {
+
+                console.log("This is a file");
+
+                let filePath;
+
+                if (currentPath === "") {
+                    filePath = this.name;
+                }
+                else {
+                    filePath = currentPath + "/" + this.name;
+                }
+
+                console.log("Opening:", filePath);
+
+                window.open(
+                    "/api/Media/" + filePath,
+                    "_blank"
+                );
+            }
+        })
+        fdiv.appendChild(fbutton);
         folderContent.append(fdiv);
     }
 }
 
 
-getFolderContent("");
+
+getFolderContent();

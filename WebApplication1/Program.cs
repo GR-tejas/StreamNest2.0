@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<DirectoryService>();
+builder.Services.AddScoped<MediaService>();
 
 var app = builder.Build();
 
